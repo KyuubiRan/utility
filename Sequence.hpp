@@ -39,7 +39,8 @@ public:
         return *this;
     }
 
-    Sequence &operator+=(const std::vector<T> &other) {
+    template<template<typename> class Container>
+    Sequence &operator+=(const Container<T> &other) {
         m_data.insert(m_data.end(), other.begin(), other.end());
         return *this;
     }
@@ -71,7 +72,8 @@ public:
         return *this;
     }
 
-    Sequence &contact(const std::vector<T> &other) {
+    template<template<typename> class Container>
+    Sequence &contact(const Container<T> &other) {
         m_data.insert(m_data.end(), other.begin(), other.end());
         return *this;
     }

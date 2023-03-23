@@ -27,14 +27,14 @@ int main() {
 
     std::cout << "---------OnEach End---------" << std::endl;
 
-    auto seq5 = Sequence<int>::Of(vec2);
-    auto elem1 = seq5.at(0);
+    auto seq4 = Sequence<int>::Of(vec2);
+    auto elem1 = seq4.at(0);
     if (elem1) {
         std::cout << "Has elem1: " << *elem1 << std::endl;
     } else {
         std::cout << "No elem1" << std::endl;
     }
-    auto elem2 = seq5[99];
+    auto elem2 = seq4[99];
     if (elem2) {
         std::cout << "Has elem2: " << *elem1 << std::endl;
     } else {
@@ -42,4 +42,42 @@ int main() {
     }
 
     std::cout << "---------At End---------" << std::endl;
+
+    auto seq5 = Sequence<int>::Of({7, 3, 5, 5, 6, 0, 8});
+    seq5 += seq1;
+    seq5.contact(seq4);
+    seq5.forEach([](int i) { std::cout << i << std::endl; });
+
+    std::cout << "---------Contact End---------" << std::endl;
+
+    auto first = seq5.first();
+    if (first) {
+        std::cout << "Has first: " << *first << std::endl;
+    } else {
+        std::cout << "No first" << std::endl;
+    }
+
+    auto last = seq5.last();
+    if (last) {
+        std::cout << "Has last: " << *last << std::endl;
+    } else {
+        std::cout << "No last" << std::endl;
+    }
+
+    auto first2 = seq5.first([](int i) { return i % 2 == 0; });
+    if (first2) {
+        std::cout << "Has first2: " << *first2 << std::endl;
+    } else {
+        std::cout << "No first2" << std::endl;
+    }
+
+    auto last2 = seq5.last([](int i) { return i % 2 == 0; });
+    if (last2) {
+        std::cout << "Has last2: " << *last2 << std::endl;
+    } else {
+        std::cout << "No last2" << std::endl;
+    }
+
+    std::cout << "---------First End---------" << std::endl;
+
 }
