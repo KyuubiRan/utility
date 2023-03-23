@@ -19,13 +19,16 @@ int main() {
     auto seq2 = Sequence<float>(vec);
     seq2.forEach([](float i) { std::cout << i << std::endl; });
 
-    std::cout << "---------Map End---------" << std::endl;
+    std::cout << "---------Map End 1---------" << std::endl;
 
     auto set = seq1.mapTo<std::set<double>>([](int item) { return item * 2.23; });
     auto seq3 = Sequence<double>(set);
     seq3.forEach([](double i) { std::cout << i << std::endl; });
 
+    std::cout << "---------Map End 2---------" << std::endl;
+
     auto vec2 = Sequence<int>::of({1, 2, 3}).onEach([](int i) { std::cout << i << std::endl; }).toVector();
+
     std::cout << "---------OnEach End---------" << std::endl;
 
     auto seq5 = Sequence<int>::of(vec2);
@@ -35,10 +38,12 @@ int main() {
     } else {
         std::cout << "No elem1" << std::endl;
     }
-    auto elem2 = seq5.at(99);
+    auto elem2 = seq5[99];
     if (elem2) {
         std::cout << "Has elem2: " << *elem1 << std::endl;
     } else {
         std::cout << "No elem2" << std::endl;
     }
+
+    std::cout << "---------At End---------" << std::endl;
 }
