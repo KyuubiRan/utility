@@ -130,7 +130,7 @@ public:
         return result;
     }
 
-    template<class Elem>
+    template<typename Elem>
     Sequence<Elem> map(const std::function<Elem(const T &)> &func) {
         Sequence<Elem> result;
         result.m_data.reserve(m_data.size());
