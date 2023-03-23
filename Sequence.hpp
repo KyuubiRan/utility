@@ -119,8 +119,8 @@ public:
         return at(index);
     }
 
-    template<typename Container, typename Func, typename Elem = std::decay_t<std::invoke_result_t<Func, const T&>>>
-    Container mapTo(Func&& func) {
+    template<typename Container, typename Func, typename Elem = std::decay_t<std::invoke_result_t<Func, const T &>>>
+    Container mapTo(Func &&func) {
         std::vector<Elem> vec{};
         vec.reserve(m_data.size());
         std::transform(m_data.begin(), m_data.end(), std::back_inserter(vec), std::forward<Func>(func));
@@ -170,11 +170,11 @@ public:
     }
 
     template<class Container>
-    static Sequence of(const Container &data) {
+    static Sequence Of(const Container &data) {
         return Sequence(data);
     }
 
-    static Sequence of(const std::initializer_list<T> &list) {
+    static Sequence Of(const std::initializer_list<T> &list) {
         return Sequence(list);
     }
 

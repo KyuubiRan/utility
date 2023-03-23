@@ -27,11 +27,11 @@ int main() {
 
     std::cout << "---------Map End 2---------" << std::endl;
 
-    auto vec2 = Sequence<int>::of({1, 2, 3}).onEach([](int i) { std::cout << i << std::endl; }).toVector();
+    auto vec2 = Sequence<int>::Of({1, 2, 3}).onEach([](int i) { std::cout << i << std::endl; }).toVector();
 
     std::cout << "---------OnEach End---------" << std::endl;
 
-    auto seq5 = Sequence<int>::of(vec2);
+    auto seq5 = Sequence<int>::Of(vec2);
     auto elem1 = seq5.at(0);
     if (elem1) {
         std::cout << "Has elem1: " << *elem1 << std::endl;
