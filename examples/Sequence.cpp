@@ -36,7 +36,7 @@ int main() {
     }
     auto elem2 = seq4[99];
     if (elem2) {
-        std::cout << "Has elem2: " << *elem1 << std::endl;
+        std::cout << "Has elem2: " << *elem2 << std::endl;
     } else {
         std::cout << "No elem2" << std::endl;
     }
