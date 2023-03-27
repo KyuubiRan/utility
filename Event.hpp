@@ -3,14 +3,18 @@
 #include <mutex>
 
 namespace event {
+
 template<typename... Args>
-class Event final {
+class Event {
+protected:
     using HandlerFn = std::function<void(Args...)>;
 
     std::mutex m_lock;
     std::vector<std::pair<HandlerFn, size_t>> m_handlers;
 public:
     Event() = default;
+
+    virtual ~Event() = default;
 
     void invoke(Args... args) {
         std::lock_guard<std::mutex> _g(m_lock);
@@ -55,6 +59,30 @@ public:
 
     Event &operator-=(const HandlerFn &handler) {
         return removeHandler(handler);
+    }
+};
+
+template<typename... Args>
+class CancelableEvent : public Event<Args..., bool &> {
+private:
+    using Event<Args..., bool &>::invoke;
+
+public:
+    CancelableEvent() = default;
+
+    virtual ~CancelableEvent() = default;
+
+    void invoke(Args... args) {
+        std::lock_guard<std::mutex> _g(this->m_lock);
+        bool cancel = false;
+        for (const auto &[handler, p]: this->m_handlers) {
+            handler(args..., cancel);
+            if (cancel) break;
+        }
+    }
+
+    void operator()(Args... args) {
+        invoke(args...);
     }
 };
 

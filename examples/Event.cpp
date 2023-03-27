@@ -25,8 +25,24 @@ int main() {
     Test t = Test();
     e += [&t](int i) { t.test(i); };
 
-    e(666);
+    e(123);
     std::cout << "------------Remove Test-----------" << std::endl;
     e -= test;
-    e(666);
+    e(456);
+
+
+    std::cout << "------------CancelableEvent-----------" << std::endl;
+    event::CancelableEvent<int> ce;
+    auto fn3 = [](int i, bool &canceled) {
+        std::cout << "i: " << i << std::endl;
+        canceled = true;
+//        canceled = false;
+    };
+    int i3 = 123123;
+    auto fn4 = [i3](int i, bool &canceled) { std::cout << "i: " << i << " i2: " << i3 << std::endl; };
+    ce += fn3;
+    ce += fn4;
+
+    ce(789);
+
 }
