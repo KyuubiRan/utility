@@ -1,5 +1,5 @@
 # What's this
-A C++20, Single header-only utility library.
+A C++20, header-only utility library.
 
 ## Features
 - Random (Random number generator)
