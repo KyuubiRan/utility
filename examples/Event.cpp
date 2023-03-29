@@ -1,6 +1,8 @@
 #include <iostream>
 #include "../Event.hpp"
 
+using namespace event;
+
 void test(int i1) {
     std::cout << "test: " << i1 << std::endl;
 }
@@ -13,7 +15,7 @@ public:
 };
 
 int main() {
-    event::Event<int> e;
+    Event<int> e;
     auto fn = [](int i) { std::cout << "i: " << i << std::endl; };
     int i2 = 123123;
     auto fn2 = [i2](int i) { std::cout << "i: " << i << " i2: " << i2 << std::endl; };
@@ -32,7 +34,7 @@ int main() {
 
 
     std::cout << "------------CancelableEvent-----------" << std::endl;
-    event::CancelableEvent<int> ce;
+    CancelableEvent<int> ce;
     auto fn3 = [](int i, bool &canceled) {
         std::cout << "i: " << i << std::endl;
         canceled = true;

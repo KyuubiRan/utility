@@ -17,7 +17,7 @@ class Random {
 public:
     explicit Random(uint64_t seed) : m_gen(seed) {}
 
-    Random() : m_gen((uint64_t) std::random_device().entropy()) {}
+    Random() : m_gen((uint64_t) std::random_device()()) {}
 
     static Random &GetInstance() {
         static Random rand{};
@@ -52,7 +52,11 @@ public:
         return (T) nextFloating((T) 0, to);
     }
 
-    bool nextBool(const float ratio = 0.5f) {
+    bool nextBool() {
+        return nextInteger(1) == 1;
+    }
+
+    bool nextBool(const float ratio) {
         return nextFloating(1.f) < ratio;
     }
 };
