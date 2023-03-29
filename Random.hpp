@@ -17,7 +17,7 @@ class Random {
 public:
     explicit Random(uint64_t seed) : m_gen(seed) {}
 
-    Random() : m_gen((uint64_t) std::random_device()()) {}
+    Random() : m_gen(std::random_device()()) {}
 
     static Random &GetInstance() {
         static Random rand{};
