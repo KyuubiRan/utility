@@ -49,13 +49,13 @@ public:
         return value;
     }
 
-    void push_back(Container::value_type value) requires HasPushBack<Container> {
+    void push_back(typename Container::value_type value) requires HasPushBack<Container> {
         std::unique_lock<std::mutex> lock(m_mutex);
         m_data.push_back(value);
         m_cv.notify_one();
     }
 
-    void push_front(Container::value_type value) requires HasPushFront<Container> {
+    void push_front(typename Container::value_type value) requires HasPushFront<Container> {
         std::unique_lock<std::mutex> lock(m_mutex);
         m_data.push_front(value);
         m_cv.notify_one();
