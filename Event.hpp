@@ -27,7 +27,7 @@ public:
         invoke(args...);
     }
 
-    Event &addHandler(const HandlerFn handler) {
+    Event &addHandler(const HandlerFn &handler) {
         std::lock_guard<std::mutex> _g(m_lock);
         auto ptr = reinterpret_cast<size_t>(handler.template target<void (*)(Args...)>());
         if (ptr) for (const auto &[h, p]: m_handlers) if (p == ptr) return *this;
@@ -35,7 +35,7 @@ public:
         return *this;
     }
 
-    Event &removeHandler(const HandlerFn handler) {
+    Event &removeHandler(const HandlerFn &handler) {
         std::lock_guard<std::mutex> _g(m_lock);
         auto p = reinterpret_cast<size_t>(handler.template target<void (*)(Args...)>());
         if (p) std::erase_if(m_handlers, [p](const auto &h) { return p == h.second; });
@@ -68,6 +68,7 @@ template<typename... Args>
 class CancelableEvent : public Event<Args..., bool &> {
 private:
     using Event<Args..., bool &>::invoke;
+    using Event<Args..., bool &>::operator();
 
 public:
     CancelableEvent() = default;
