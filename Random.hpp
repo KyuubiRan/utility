@@ -11,6 +11,9 @@ concept FloatingPointType = std::floating_point<T>;
 template<typename T>
 concept IntegerType = std::integral<T>;
 
+template<typename T>
+concept CharType = std::same_as<T, char> || std::same_as<T, wchar_t> || std::same_as<T, char8_t> || std::same_as<T, char16_t> || std::same_as<T, char32_t>;
+
 class Random {
     std::mt19937_64 m_gen;
 
@@ -50,6 +53,21 @@ public:
     requires FloatingPointType<T>
     T nextFloating(T to) {
         return (T) nextFloating((T) 0, to);
+    }
+
+    template<typename T>
+    requires CharType<T>
+    T nextChar(T from, T to) {
+        if (from >= to)
+            return to;
+        std::uniform_int_distribution<int32_t> d((int32_t) from, (int32_t) to);
+        return (T) d(m_gen);
+    }
+
+    template<typename T>
+    requires CharType<T>
+    T nextChar(T to) {
+        return nextChar((T) 0, to);
     }
 
     bool nextBool() {
