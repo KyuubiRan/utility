@@ -102,6 +102,14 @@ public:
         return std::nullopt;
     }
 
+    std::optional<T> single(const FilterFn &func) {
+        auto t = std::find_first_of(m_data.begin(), m_data.end(), func);
+        if (t == m_data.end()) return std::nullopt;
+        auto result = std::find_if(t + 1, m_data.end(), func);
+        if (result != m_data.end()) return std::nullopt;
+        return *t;
+    }
+
     std::optional<T> first() {
         if (m_data.empty()) return std::nullopt;
         return m_data.front();
@@ -115,6 +123,11 @@ public:
     std::optional<T> at(size_t index) {
         if (index >= m_data.size()) return std::nullopt;
         return m_data[index];
+    }
+
+    std::optional<T> single() {
+        if (m_data.size() != 1) return std::nullopt;
+        return m_data.front();
     }
 
     std::optional<T> operator[](size_t index) {
