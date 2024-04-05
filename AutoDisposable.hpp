@@ -16,6 +16,14 @@ class AutoDisposable {
     T m_data;
 
 public:
+    AutoDisposable(const AutoDisposable &) = delete;
+
+    AutoDisposable(AutoDisposable &&) = delete;
+
+    AutoDisposable &operator=(const AutoDisposable &) = delete;
+
+    AutoDisposable &operator=(AutoDisposable &&) = delete;
+
     explicit AutoDisposable(T &&data) : m_data(std::move(data)) {}
 
     explicit AutoDisposable(const T &data) : m_data(data) {}
