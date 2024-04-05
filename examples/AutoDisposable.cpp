@@ -3,10 +3,10 @@
 #include <cstring>
 
 class Test {
+public:
     int i;
     bool moved = false;
 
-public:
     explicit Test(int i) : i(i) {
         std::cout << "Test " << i << " ctor" << std::endl;
     }
@@ -26,7 +26,7 @@ using namespace disposable;
 template<>
 struct IDisposable<Test *> {
     static void OnDispose(Test *test) {
-        std::cout << "Auto IDisposable Test 1" << std::endl;
+        std::cout << "Auto IDisposable Test " << test->i << std::endl;
         delete test;
     }
 };
@@ -34,7 +34,7 @@ struct IDisposable<Test *> {
 template<>
 struct IDisposable<Test> {
     static void OnDispose(Test &test) {
-        std::cout << "Auto IDisposable Test 2" << std::endl;
+        std::cout << "Auto IDisposable Test " << test.i << std::endl;
     }
 };
 
