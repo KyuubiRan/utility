@@ -5,21 +5,21 @@
 #include <mutex>
 
 namespace event {
-
 template<typename... Args>
 class Event {
 protected:
     using HandlerFn = std::function<void(Args...)>;
 
     std::mutex m_lock;
-    std::vector<std::pair<HandlerFn, size_t>> m_handlers;
+    std::vector<std::pair<HandlerFn, size_t> > m_handlers;
+
 public:
     Event() = default;
 
     virtual ~Event() = default;
 
     void invoke(Args... args) {
-        std::lock_guard<std::mutex> _g(m_lock);
+        std::scoped_lock _g(m_lock);
         for (const auto &[handler, p]: m_handlers) handler(args...);
     }
 
@@ -28,7 +28,7 @@ public:
     }
 
     Event &addHandler(const HandlerFn &handler) {
-        std::lock_guard<std::mutex> _g(m_lock);
+        std::scoped_lock _g(m_lock);
         auto ptr = reinterpret_cast<size_t>(handler.template target<void (*)(Args...)>());
         if (ptr) for (const auto &[h, p]: m_handlers) if (p == ptr) return *this;
         m_handlers.emplace_back(handler, ptr);
@@ -36,14 +36,14 @@ public:
     }
 
     Event &removeHandler(const HandlerFn &handler) {
-        std::lock_guard<std::mutex> _g(m_lock);
+        std::scoped_lock _g(m_lock);
         auto p = reinterpret_cast<size_t>(handler.template target<void (*)(Args...)>());
         if (p) std::erase_if(m_handlers, [p](const auto &h) { return p == h.second; });
         return *this;
     }
 
     void clear() {
-        std::lock_guard<std::mutex> _g(m_lock);
+        std::scoped_lock _g(m_lock);
         m_handlers.clear();
     }
 
@@ -66,7 +66,6 @@ public:
 
 template<typename... Args>
 class CancelableEvent : public Event<Args..., bool &> {
-private:
     using Event<Args..., bool &>::invoke;
     using Event<Args..., bool &>::operator();
 
@@ -88,5 +87,4 @@ public:
         invoke(args...);
     }
 };
-
 }
