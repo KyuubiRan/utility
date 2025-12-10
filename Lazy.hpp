@@ -28,7 +28,7 @@ public:
 
     Lazy &operator=(Lazy &&) = delete;
 
-    explicit Lazy(Ctor initializer) : m_value(std::nullopt), m_initializer(std::move(initializer)) {
+    Lazy(Ctor initializer) : m_value(std::nullopt), m_initializer(std::move(initializer)) { // NOLINT(*-explicit-constructor)
     }
 
     bool initialized() const {
